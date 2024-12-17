@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 from matplotlib.colors import ListedColormap
 from copy import deepcopy
 
+
 def download_input(year, day):
 
     filename = f"inputs/day_{str(day).zfill(2)}_input.txt"
@@ -32,7 +33,7 @@ def read_input(day, test=False):
         )
     ]
 
-    aoc = '\n'.join(deepcopy(lines))
+    aoc = "\n".join(deepcopy(lines))
 
     if "" in lines:
         end = lines.index("")
