@@ -1,22 +1,27 @@
+import os
 import pathlib
 import requests
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.colors import ListedColormap
-
+from copy import deepcopy
 
 def download_input(year, day):
-    url = f"https://adventofcode.com/{year}/day/{day}/input"
 
-    with open("cookie.txt", "r") as file:
-        session = file.read()
+    filename = f"inputs/day_{str(day).zfill(2)}_input.txt"
 
-    headers = {"cookie": f"session={session}"}
+    if not os.path.exists(filename):
+        url = f"https://adventofcode.com/{year}/day/{day}/input"
 
-    pathlib.Path("inputs").mkdir(parents=True, exist_ok=True)
+        with open("cookie.txt", "r") as file:
+            session = file.read()
 
-    with open(f"inputs/day_{str(day).zfill(2)}_input.txt", "wb") as file:
-        file.write(requests.get(url, headers=headers).content)
+        headers = {"cookie": f"session={session}"}
+
+        pathlib.Path("inputs").mkdir(parents=True, exist_ok=True)
+
+        with open(filename, "wb") as file:
+            file.write(requests.get(url, headers=headers).content)
 
 
 def read_input(day, test=False):
@@ -26,6 +31,8 @@ def read_input(day, test=False):
             f"inputs/day_{str(day).zfill(2)}_{'test_' if test else ''}input.txt", "r"
         )
     ]
+
+    aoc = '\n'.join(deepcopy(lines))
 
     if "" in lines:
         end = lines.index("")
@@ -42,7 +49,7 @@ def read_input(day, test=False):
     print(lines[:5])
     print(R, C)
 
-    return lines, G, R, C
+    return aoc, lines, G, R, C
 
 
 dir_dict = {"^": (-1, 0), ">": (0, 1), "v": (1, 0), "<": (0, -1)}
